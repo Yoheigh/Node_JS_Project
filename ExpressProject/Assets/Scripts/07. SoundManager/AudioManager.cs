@@ -88,7 +88,7 @@ public class AudioManager : MonoBehaviour
         if (!newMusic) return;
         if (fadeInMusicflag) return;
 
-        StartCoroutine(FadeInMusicCoroutine(newMusic, fadeTime));
+        StartCoroutine(FadeInMusicCoroutine(newMusic, fadeTime)); 
     }
 
     public IEnumerator FadeInMusicCoroutine(AudioClip newMusic, float fadeTime)
