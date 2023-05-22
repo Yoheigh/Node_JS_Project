@@ -18,9 +18,10 @@ MonoBehaviour:
   m_GUID: 66770bbd23093d34cbea4baf7d8ba4a3
   m_SerializeEntries:
   - m_GUID: 17853397bc3f1484ea69f39fa4e9c9b0
-    m_Address: Box.Prefabs
+    m_Address: Box
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Prefabs
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 4b8bf13a0e9383c4b8e3a9003d2f64f5, type: 2}
   m_SchemaSet:

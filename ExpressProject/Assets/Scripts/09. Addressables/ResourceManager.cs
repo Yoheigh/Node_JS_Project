@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
@@ -8,9 +8,9 @@ using Object = UnityEngine.Object;
 
 public class ResourceManager
 {
-    Dictionary<string, Object> _resources = new Dictionary<string, Object>();       // ¸®¼Ò½º ¸®½ºÆ® ¸ñ·Ï °ü¸®
+    Dictionary<string, Object> _resources = new Dictionary<string, Object>();       // ë¦¬ì†ŒìŠ¤ ë¦¬ìŠ¤íŠ¸ ëª©ë¡ ê´€ë¦¬
 
-    public Manager Manager => Manager.Instance;                                     // ¸Å´ÏÀú¸¦ ÅëÇØ Object °ü¸®¸¦ ÇÏ±â À§ÇØ ¼±¾ğ
+    public Manager Manager => Manager.Instance;                                     // ë§¤ë‹ˆì €ë¥¼ í†µí•´ Object ê´€ë¦¬ë¥¼ í•˜ê¸° ìœ„í•´ ì„ ì–¸
 
     public GameObject Instantiate(string key, Transform parent = null, bool pooling = false)
     {
@@ -60,14 +60,14 @@ public class ResourceManager
     public void LoadAsync<T>(string key, Action<T> callback = null) where T : Object
     {
         if (_resources.TryGetValue(key, out Object resource))                       
-        {                                                                           // Å° °ª °Ë»ç
+        {                                                                           // í‚¤ ê°’ ê²€ì‚¬
             callback?.Invoke(resource as T);
-            return;                                                                 // Äİ¹é °Ë»ç ÈÄ ¹İÈ¯
+            return;                                                                 // ì½œë°± ê²€ì‚¬ í›„ ë°˜í™˜
         }
 
-        var asyncOperation = Addressables.LoadAssetAsync<T>(key);
-        asyncOperation.Completed += (op) =>                                         // ¸®¼Ò½º ·Îµù
-        {                                                                           // ¿Ï·áµÇ¸é Äİ¹é °Ë»ç ÈÄ ¹İÈ¯
+        var asyncOperation = Addressables.LoadAssetAsync<T>(key);                   // 1ë²ˆì§¸ í•¸ë“¤ : ê° ë¦¬ì†ŒìŠ¤ í˜¸ì¶œì´ ì™„ë£Œë˜ì—ˆì„ ë•Œ í˜¸ì¶œ
+        asyncOperation.Completed += (op) =>                                         // ë¦¬ì†ŒìŠ¤ ë¡œë”©
+        {                                                                           // ì™„ë£Œë˜ë©´ ì½œë°± ê²€ì‚¬ í›„ ë°˜í™˜
             _resources.Add(key, op.Result);
             callback?.Invoke(op.Result);
         };
@@ -75,7 +75,7 @@ public class ResourceManager
 
     public void LoadAllAsync<T>(string label, Action<string, int, int> callback) where T : Object
     {
-        var OpHandle = Addressables.LoadResourceLocationsAsync(label, typeof(T));
+        var OpHandle = Addressables.LoadResourceLocationsAsync(label, typeof(T));   // 2ë²ˆì§¸ í•¸ë“¤ : ëª¨ë“  ë¦¬ì†ŒìŠ¤ í˜¸ì¶œì´ ì™„ë£Œë˜ì—ˆì„ ë•Œ í˜¸ì¶œ
 
         OpHandle.Completed += (op) =>
         {

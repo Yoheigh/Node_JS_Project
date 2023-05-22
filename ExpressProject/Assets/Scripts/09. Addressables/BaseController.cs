@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,7 +11,7 @@ public class BaseController : MonoBehaviour
         Init();
     }
 
-    // ÇÑ ¹ø¸¸ ÃÊ±âÈ­ÇÏ´Â ÇÔ¼ö
+    // í•œ ë²ˆë§Œ ì´ˆê¸°í™”í•˜ëŠ” í•¨ìˆ˜
     public virtual bool Init()
     {
         if (_init) return false;
