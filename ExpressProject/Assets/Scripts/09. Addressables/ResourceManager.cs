@@ -87,6 +87,7 @@ public class ResourceManager
                 LoadAsync<T>(result.PrimaryKey, (obj) =>
                 {
                     loadCount++;
+                    Manager.UI.UpdateUI(loadCount, totalCount);
                     callback?.Invoke(result.PrimaryKey, loadCount, totalCount);
                 });
             }

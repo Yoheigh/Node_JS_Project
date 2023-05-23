@@ -10,6 +10,7 @@ public class Manager : MonoBehaviour
     public PoolManager Pool = new PoolManager();
     public ResourceManager Resource = new ResourceManager();
     public ObjectManager Object = new ObjectManager();
+    public UITest UI;
 
     private void Awake()
     {

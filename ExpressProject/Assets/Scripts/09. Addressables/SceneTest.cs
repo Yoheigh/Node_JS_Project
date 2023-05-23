@@ -10,9 +10,10 @@ public class SceneTest : MonoBehaviour
     {
         Manager.Resource.LoadAllAsync<GameObject>("Prefabs", (key, count, totalCount) =>
         {
+            Manager.UI.UpdateUI(count, totalCount);
             Debug.Log($"{key} {count}/{totalCount}");
 
-            if(count == totalCount)
+            if (count == totalCount)
             {
                 StartCoroutine(StartGen());
             }
