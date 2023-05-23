@@ -12,18 +12,18 @@ public class ResourceManager
 
     public Manager Manager => Manager.Instance;                                     // 매니저를 통해 Object 관리를 하기 위해 선언
 
-    public GameObject Instantiate(string key, Transform parent = null, bool pooling = false)
+    public GameObject Instantiate(string key, Transform parent = null, bool pooling = false)    // 리소스 전용 Instantiate 함수
     {
         GameObject prefab = Load<GameObject>($"{key}");
         if(prefab == null)
         {
-            Debug.LogError($"Faild to Load Prefab : {key}");
+            Debug.LogError($"Failed to Load Prefab : {key}");
             return null;
         }
 
-        if (pooling)
-            return Manager.Pool.Pop(prefab);
-
+        if (pooling)                                                                // 해당 오브젝트가 오브젝트 풀에 들어간다면
+            return Manager.Pool.Pop(prefab);                                        // 오브젝트 풀링에 넣는 처리 후 반환
+                                                                                    /* 함수명이 Pop인 이유는 Stack 기반의 ObjectPool이기 때문 */
         GameObject go = Object.Instantiate(prefab, parent);
 
         go.name = prefab.name;
@@ -41,11 +41,11 @@ public class ResourceManager
         Object.Destroy(go);
     }
 
-    public T Load<T>(string key) where T : Object
+    public T Load<T>(string key) where T : Object                                       // 동기 로드
     {
         if (_resources.TryGetValue(key, out Object resource))
         {
-            if(typeof(T) == typeof(Sprite))
+            if(typeof(T) == typeof(Sprite))                                             // 2D 스프라이트 처리
             {
                 Texture2D tex = resource as Texture2D;
                 Sprite spr = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), Vector2.zero);
@@ -57,17 +57,17 @@ public class ResourceManager
         return Resources.Load<T>(key);
     }
 
-    public void LoadAsync<T>(string key, Action<T> callback = null) where T : Object
+    public void LoadAsync<T>(string key, Action<T> callback = null) where T : Object    // 비동기 로드
     {
         if (_resources.TryGetValue(key, out Object resource))                       
-        {                                                                           // 키 값 검사
+        {                                                                               // 키 값 검사
             callback?.Invoke(resource as T);
-            return;                                                                 // 콜백 검사 후 반환
+            return;                                                                     // 콜백 검사 후 반환
         }
 
-        var asyncOperation = Addressables.LoadAssetAsync<T>(key);                   // 1번째 핸들 : 각 리소스 호출이 완료되었을 때 호출
-        asyncOperation.Completed += (op) =>                                         // 리소스 로딩
-        {                                                                           // 완료되면 콜백 검사 후 반환
+        var asyncOperation = Addressables.LoadAssetAsync<T>(key);                       // 1번째 핸들 : 각 리소스 호출이 완료되었을 때 호출
+        asyncOperation.Completed += (op) =>                                             // 리소스 로딩
+        {                                                                               // 완료되면 콜백 검사 후 반환
             _resources.Add(key, op.Result);
             callback?.Invoke(op.Result);
         };
@@ -87,7 +87,14 @@ public class ResourceManager
                 LoadAsync<T>(result.PrimaryKey, (obj) =>
                 {
                     loadCount++;
-                    Manager.UI.UpdateUI(loadCount, totalCount);
+
+                    // AsyncOperationHandle의 iList의 각 요소들은 PrimaryKey, InternalId, ProviderId, DependencyHashCode, ResourceLocationData를 가지고 있다.
+                    // result : Assets/Prefabs/Box.prefab ( 게임 오브젝트의 주소)
+                    Debug.Log($"result : {result}");
+
+                    // result.PrimaryKey : Box ( 어드레서블에 등록된 키)
+                    Debug.Log($"result.PrimaryKey : {result.PrimaryKey}");
+
                     callback?.Invoke(result.PrimaryKey, loadCount, totalCount);
                 });
             }

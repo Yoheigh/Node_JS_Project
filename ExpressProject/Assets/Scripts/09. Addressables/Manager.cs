@@ -25,5 +25,8 @@ public class Manager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
+
+        // °øºÎ¿ë
+        UI.Init();
     }
 }
